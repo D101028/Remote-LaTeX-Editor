@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <iframe 
+        src="/static/pdfjs/web/viewer.html?file=/my_pdf" 
+        style="border: none;">
+        </iframe>
+    </div>
+
+    <script>
+        const iframe = document.querySelector('iframe');
+        iframe.style.width = window.innerWidth * 0.95 + 'px';
+        iframe.style.height = window.innerHeight * 0.95 + 'px';
+        window.addEventListener('resize', () => {
+            iframe.style.width = window.innerWidth * 0.95 + 'px';
+            iframe.style.height = window.innerHeight * 0.95 + 'px';
+        });
+    </script>
+</body>
+</html>
