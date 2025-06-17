@@ -19,7 +19,10 @@ def home():
 
 @editor_bp.route("/fetch_pdf")
 def fetch_pdf():
-    return send_from_directory(Config.COMPILEDIR, "test.pdf")
+    pdf_path = os.path.join(Config.COMPILEDIR, "test.pdf")
+    directory = os.path.abspath(os.path.dirname(pdf_path))
+    filename = os.path.basename(pdf_path)
+    return send_from_directory(directory, filename)
 
 @editor_bp.route("/save_and_compile", methods=['POST'])
 def save_and_compile():
