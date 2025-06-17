@@ -1,4 +1,5 @@
 test*.py
+test.conf
 .venv-*
 workplace
 !app/static/pdfjs/build/
