@@ -1,6 +1,7 @@
 test*.py
 .venv-*
 workplace
+!app/static/pdfjs/build/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -12,7 +13,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-# build/
+build/
 develop-eggs/
 dist/
 downloads/
