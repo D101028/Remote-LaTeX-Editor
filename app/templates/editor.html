@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Monaco LaTeX Dark Mode</title>
+  <title>Online LaTeX Editor</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
   <link rel="stylesheet" href="/static/css/test.css">
 </head>
@@ -11,17 +11,19 @@
     <div id="editor"></div>
     <div id="preview">
       <iframe 
-        src="/static/pdfjs/web/viewer.html?file=/test_pdf" 
+        src="/static/pdfjs/web/viewer.html?file=/fetch_pdf" 
         id="pdf-iframe">
       </iframe>
     </div>
   </div>
 
+  <!-- Tex Content -->
+  <script id="init-tex-contents" type="application/json">
+  {{ tex_contents | tojson }}
+  </script>
+  
   <!-- Monaco Editor -->
   <script src="https://unpkg.com/monaco-editor@latest/min/vs/loader.js"></script>
-
-  <!-- pdfjs rendering -->
-
 
   <script>
     require.config({ paths: { vs: 'https://unpkg.com/monaco-editor@latest/min/vs' } });
@@ -47,25 +49,41 @@
       });
 
       // 建立 Monaco 編輯器（使用暗色主題）
+      texContents = JSON.parse(document.getElementById('init-tex-contents').textContent)
       const editor = monaco.editor.create(document.getElementById('editor'), {
-        value: `\\documentclass{article}
-\\begin{document}
-Inline math: $E = mc^2$
-
-Display math:
-
-$$
-f(x) = \\sum_{n=0}^{\\infty} \\frac{f^{(n)}(0)}{n!}x^n
-$$
-
-% This is a comment
-\\end{document}
-`,
+        value: texContents,
         language: 'latex',
         theme: 'vs-dark',
         fontSize: 16,
         automaticLayout: true
       });
+    });
+
+    // Ctrl + S to save and compile data
+    document.addEventListener('keydown', function (e) {
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        const latexContent = monaco.editor.getModels()[0].getValue();
+        fetch('/save_and_compile', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ content: latexContent })
+        })
+        .then(response => { return response.json(); })
+        .then(data => {
+          // Reload iframe
+          if (data.status === 200) {
+            document.getElementById('pdf-iframe').contentWindow.location.reload();
+          } else {
+            alert(`Compile Failed: ${data.content}`);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      }
     });
   </script>
 </body>
