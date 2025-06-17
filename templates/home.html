@@ -9,12 +9,13 @@
     <div>
         <iframe 
         src="/static/pdfjs/web/viewer.html?file=/my_pdf" 
-        style="border: none;">
+        style="border: none;"
+        id="pdf-iframe">
         </iframe>
     </div>
-
+    
     <script>
-        const iframe = document.querySelector('iframe');
+        const iframe = document.getElementById("pdf-iframe");
         iframe.style.width = window.innerWidth * 0.95 + 'px';
         iframe.style.height = window.innerHeight * 0.95 + 'px';
         window.addEventListener('resize', () => {
@@ -22,5 +23,24 @@
             iframe.style.height = window.innerHeight * 0.95 + 'px';
         });
     </script>
+
+    <div id="editor-container"></div>
+    <script src="https://unpkg.com/monaco-editor@latest/min/vs/loader.js"></script>
+    <script>
+        require.config({ paths: { vs: 'https://unpkg.com/monaco-editor@latest/min/vs' } });
+        require(['vs/editor/editor.main'], function () {
+        monaco.editor.create(document.getElementById('editor-container'), {
+            value: [
+            'function helloWorld() {',
+            '\tconsole.log("Hello, world!");',
+            '}'
+            ].join('\n'),
+            language: 'javascript',
+            theme: 'vs-dark',
+            fontSize: 14,
+            automaticLayout: true
+        });
+        });
+  </script>
 </body>
 </html>

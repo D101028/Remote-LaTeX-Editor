@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Monaco LaTeX Dark Mode</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <link rel="stylesheet" href="/static/css/test.css">
+</head>
+<body>
+  <div id="container">
+    <div id="editor"></div>
+    <div id="preview">
+      <iframe 
+        src="/static/pdfjs/web/viewer.html?file=/test_pdf" 
+        id="pdf-iframe">
+      </iframe>
+    </div>
+  </div>
+
+  <!-- Monaco Editor -->
+  <script src="https://unpkg.com/monaco-editor@latest/min/vs/loader.js"></script>
+
+  <!-- pdfjs rendering -->
+
+
+  <script>
+    require.config({ paths: { vs: 'https://unpkg.com/monaco-editor@latest/min/vs' } });
+    require(['vs/editor/editor.main'], function () {
+      // 註冊 latex 語言
+      monaco.languages.register({ id: 'latex' });
+
+      // 定義 latex 語法高亮
+      monaco.languages.setMonarchTokensProvider('latex', {
+        tokenizer: {
+          root: [
+            [/\\[a-zA-Z]+/, "keyword"],        // 指令，如 \frac
+            [/%.*$/, "comment"],               // 註解
+            [/\$[^$]*\$/, "string"],           // $...$
+            [/\\\[/, { token: "string", next: "@mathEnv" }], // \[...\]
+            [/{|}/, "delimiter.bracket"],      // 大括號
+          ],
+          mathEnv: [
+            [/\\\]/, { token: "string", next: "@pop" }],
+            [/./, "string"]
+          ]
+        }
+      });
+
+      // 建立 Monaco 編輯器（使用暗色主題）
+      const editor = monaco.editor.create(document.getElementById('editor'), {
+        value: `\\documentclass{article}
+\\begin{document}
+Inline math: $E = mc^2$
+
+Display math:
+
+$$
+f(x) = \\sum_{n=0}^{\\infty} \\frac{f^{(n)}(0)}{n!}x^n
+$$
+
+% This is a comment
+\\end{document}
+`,
+        language: 'latex',
+        theme: 'vs-dark',
+        fontSize: 16,
+        automaticLayout: true
+      });
+    });
+  </script>
+</body>
+</html>
