@@ -19,9 +19,15 @@ $ .venv/Scripts/activate
 $ source .venv/bin/activate
 ```
 
-4. Start the app.
+4. Create the config file. 
+
+You may edit and use the template config file `./config.conf`, 
+or just use your own config file. 
+
+5. Start the app.
 ```shell
-$ python3 main.py
+$ python3 main.py                       # Use the default config file `./config.conf` 
+$ python3 main.py -c your_config.conf   # Use your own config file
 ```
 
 ## Third-Party Libraries Notice
