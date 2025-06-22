@@ -1,4 +1,6 @@
 (() => {
+    'use strict';
+    
     require.config({ paths: { vs: 'https://unpkg.com/monaco-editor@latest/min/vs' } });
     require(['vs/editor/editor.main'], function () {
       // 註冊 latex 語言
