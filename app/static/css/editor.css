@@ -69,19 +69,30 @@ body {
     overflow: hidden;
 }
 
+#editor, #preview {
+  height: 100%;
+  overflow: auto;
+  user-select: none;
+}
+
 #editor {
-    width: 50%;
-    height: 100%;
-    border-right: 1px solid #444;
+  width: 50%;
+  border-right: 1px solid #444;
+  background: #2b2b2b;
 }
 
 #preview {
-    width: 50%;
-    height: 100%;
-    /* padding: 1em; */
-    overflow-y: auto;
-    background: #1e1e1e;
-    color: #eee;
+  width: 50%;
+  background: #1e1e1e;
+  color: #eee;
+}
+
+/* 拖曳條樣式 */
+#divider {
+  width: 5px;
+  background-color: #666;
+  cursor: col-resize;
+  user-select: none;
 }
 
 #pdf-iframe {
