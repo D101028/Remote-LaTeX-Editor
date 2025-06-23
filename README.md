@@ -14,18 +14,18 @@ $ git clone https://github.com/D101028/Remote-LaTeX-Editor.git
 $ cd Remote-LaTeX-Editor
 ```
 
-2. Create the virtual environment.
+2. Create and activate the virtual environment.
 ```bash
 $ python3 -m venv .venv
-```
 
-3. Activate the virtual environment.
-```bash
 # Windows
 $ .venv/Scripts/activate
-
-# Unix / MacOS
 $ source .venv/bin/activate
+```
+
+3. Install the required packages. 
+```bash
+$ pip3 install -r requirements.txt
 ```
 
 4. Create the config file. 
