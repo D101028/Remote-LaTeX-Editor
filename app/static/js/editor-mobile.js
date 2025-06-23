@@ -1,24 +1,24 @@
 (() => {
   'use strict';
 
-  window.addEventListener('resize', () => {
-    // Reload all CSS files
-    document.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
-      const href = link.getAttribute('href').split('?')[0];
-      link.setAttribute('href', `${href}?reload=${Date.now()}`);
-    });
-    // Reload this JS file
-    if (script) {
-      const script = document.getElementById('resize-script');
-      const src = script.getAttribute('src').split('?')[0];
-      const newScript = document.createElement('script');
-      newScript.id = 'resize-script';
-      newScript.src = `${src}?reload=${Date.now()}`;
-      document.body.appendChild(newScript);
-      script.remove();
-      window.removeEventListener('resize', arguments.callee);
-    }
-  });
+  // window.addEventListener('resize', () => {
+  //   // Reload all CSS files
+  //   document.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
+  //     const href = link.getAttribute('href').split('?')[0];
+  //     link.setAttribute('href', `${href}?reload=${Date.now()}`);
+  //   });
+  //   // Reload this JS file
+  //   if (script) {
+  //     const script = document.getElementById('resize-script');
+  //     const src = script.getAttribute('src').split('?')[0];
+  //     const newScript = document.createElement('script');
+  //     newScript.id = 'resize-script';
+  //     newScript.src = `${src}?reload=${Date.now()}`;
+  //     document.body.appendChild(newScript);
+  //     script.remove();
+  //     window.removeEventListener('resize', arguments.callee);
+  //   }
+  // });
   
   if (document.body.offsetWidth / document.body.offsetHeight >= 0.9) return;
 
