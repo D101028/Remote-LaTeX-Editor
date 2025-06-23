@@ -8,7 +8,7 @@ A simple remote latex online editor.
 Make sure you have already installed the Python 
 environment. (Python 3.10+ recommended)
 
-Also, your device needs a latex environment. ( at least
+Also, your device needs a latex environment. (at least
 the command `xelatex` should be available)
 
 1. Clone the repo.
@@ -23,7 +23,7 @@ $ python3 -m venv .venv
 
 # Windows
 $ .venv/Scripts/activate
-# Linux/MacOS
+# Unix/MacOS
 $ source .venv/bin/activate
 ```
 
