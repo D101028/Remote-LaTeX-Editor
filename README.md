@@ -8,6 +8,9 @@ A simple remote latex online editor.
 Make sure you have already installed the Python 
 environment. (Python 3.10+ recommended)
 
+Also, your device needs a latex environment. ( at least
+the command `xelatex` should be available)
+
 1. Clone the repo.
 ```bash
 $ git clone https://github.com/D101028/Remote-LaTeX-Editor.git
