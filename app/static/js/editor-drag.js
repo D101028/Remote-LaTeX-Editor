@@ -58,9 +58,10 @@
 
   leftArrowRect.addEventListener('click', () => {
     const previewWidth = preview.offsetWidth;
+    const previewHeight = preview.offsetHeight;
     const docWidth = document.documentElement.offsetWidth;
     const percent = previewWidth / docWidth * 100;
-    if (percent <= 30) {
+    if (percent <= 30 && previewWidth / previewHeight >= 0.9 ) {
       editor.style.width = `50%`;
       preview.style.width = `50%`;
     } else {
@@ -72,7 +73,8 @@
     const previewWidth = preview.offsetWidth;
     const docWidth = document.documentElement.offsetWidth;
     const percent = previewWidth / docWidth * 100;
-    if (percent >= 70) {
+    const ratio = docWidth * (1 - percent / 100) / editor.offsetHeight;
+    if (percent >= 70 && ratio >= 0.9) {
       editor.style.width = `50%`;
       preview.style.width = `50%`;
     } else {

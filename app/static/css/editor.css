@@ -123,9 +123,6 @@ body {
 #class-bg-rect-left:hover, #class-bg-rect-right:hover {
     fill: rgb(89, 89, 89);
 }
-#class-bg-rect-left:active, #class-bg-rect-right:active {
-    fill: rgb(30, 30, 30);
-}
 
 #pdf-iframe {
     border: none; 
@@ -140,4 +137,25 @@ body {
 
 .katex-error {
     color: red;
+}
+
+@media (max-aspect-ratio: 9/10) {
+    .nav-container {
+        height: 50px;
+    }
+    #loading-svg {
+        width: 60px;
+        height: 60px;
+    }
+    #save-and-compile-btn {
+        width: 180px;
+        height: 35px;
+        border-radius: 12px;
+        font-size: 20px;
+    }
+    #divider-right-arrow, #divider-left-arrow {
+        width: 80px;
+        height: 80px;
+        left: -37.5px;
+    }
 }

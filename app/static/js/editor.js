@@ -25,13 +25,18 @@
 
     // 建立 Monaco 編輯器（使用暗色主題）
     const texContents = JSON.parse(document.getElementById('init-tex-contents').textContent)
-    const editor = monaco.editor.create(document.getElementById('editor'), {
+    const monacoEditor = monaco.editor.create(document.getElementById('editor'), {
       value: texContents,
       language: 'latex',
       theme: 'vs-dark',
       fontSize: 16,
       automaticLayout: true
     });
+
+    // Mobile Device
+    if (document.body.offsetWidth / document.body.offsetHeight <= 0.9) {
+      monacoEditor.updateOptions({ fontSize: 16 });
+    }
   });
 
   const saveAndCompileBtn = document.getElementById("save-and-compile-btn");
