@@ -1,17 +1,26 @@
 # Remote-LaTeX-Editor
 A simple remote latex online editor.
 
+![image](img/image.png)
+
 ## Getting Started
 
-1. Build the Python environment.
+Make sure you have already installed the Python 
+environment. (Python 3.10+ recommended)
+
+1. Clone the repo.
+```bash
+$ git clone https://github.com/D101028/Remote-LaTeX-Editor.git
+$ cd Remote-LaTeX-Editor
+```
 
 2. Create the virtual environment.
-```shell
+```bash
 $ python3 -m venv .venv
 ```
 
 3. Activate the virtual environment.
-```shell
+```bash
 # Windows
 $ .venv/Scripts/activate
 
@@ -25,7 +34,7 @@ You may edit and use the template config file `./config.conf`,
 or just use your own config file. 
 
 5. Start the app.
-```shell
+```bash
 $ python3 main.py                       # Use the default config file `./config.conf` 
 $ python3 main.py -c your_config.conf   # Use your own config file
 ```
