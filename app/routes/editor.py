@@ -33,7 +33,7 @@ def save_and_compile():
         f.write(latex_content)
     
     process = subprocess.Popen(
-        ['xelatex', '-interaction=nonstopmode', '-halt-on-error', 'test.tex'],
+        [Config.TEXCMD, '-interaction=nonstopmode', '-halt-on-error', 'test.tex'],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE, 
         cwd="./workplace"
