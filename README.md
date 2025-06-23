@@ -23,6 +23,7 @@ $ python3 -m venv .venv
 
 # Windows
 $ .venv/Scripts/activate
+# Linux/MacOS
 $ source .venv/bin/activate
 ```
 
