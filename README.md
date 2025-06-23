@@ -3,6 +3,8 @@ A simple remote latex online editor.
 
 ![image](img/image.png)
 
+![image](img/image-02.png)
+
 ## Getting Started
 
 Make sure you have already installed the Python 
