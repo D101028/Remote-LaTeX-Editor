@@ -70,29 +70,61 @@ body {
 }
 
 #editor, #preview {
-  height: 100%;
-  overflow: auto;
-  user-select: none;
+    height: 100%;
+    overflow: auto;
+    user-select: none;
 }
 
 #editor {
-  width: 50%;
-  border-right: 1px solid #444;
-  background: #2b2b2b;
+    width: 50%;
+    border-right: 1px solid #444;
+    background: #2b2b2b;
 }
 
 #preview {
-  width: 50%;
-  background: #1e1e1e;
-  color: #eee;
+    width: 50%;
+    background: #1e1e1e;
+    color: #eee;
 }
 
-/* 拖曳條樣式 */
+#divider-container {
+    width: 5px;
+    overflow: visible;
+    position: relative;
+}
+
 #divider {
-  width: 5px;
-  background-color: #666;
-  cursor: col-resize;
-  user-select: none;
+    background-color: #666;
+    cursor: col-resize;
+    user-select: none;
+    height: 100%;
+    width: 100%;
+    flex-shrink: 0;
+}
+
+#divider-right-arrow, #divider-left-arrow {
+    width: 40px;
+    height: 40px;
+    left: -17.5px;
+    position: absolute;
+    z-index: 1000;
+}
+
+#divider-right-arrow {
+    top: 50px;
+}
+#divider-left-arrow {
+    top: 100px;
+}
+
+#class-bg-rect-left, #class-bg-rect-right {
+    fill: #2b2b2b;
+}
+#class-bg-rect-left:hover, #class-bg-rect-right:hover {
+    fill: rgb(89, 89, 89);
+}
+#class-bg-rect-left:active, #class-bg-rect-right:active {
+    fill: rgb(30, 30, 30);
 }
 
 #pdf-iframe {
