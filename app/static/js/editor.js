@@ -43,38 +43,38 @@
   const loadingSvg = document.getElementById("loading-svg");
 
   function switchToLoading() {
-      saveAndCompileBtn.style.display = 'none';
-      loadingSvg.style.display = 'block';
+    saveAndCompileBtn.style.display = 'none';
+    loadingSvg.style.display = 'block';
   }
 
   function switchBackFromLoading() {
-      loadingSvg.style.display = 'none';
-      saveAndCompileBtn.style.display = 'flex';
+    loadingSvg.style.display = 'none';
+    saveAndCompileBtn.style.display = 'flex';
   }
 
   function saveAndCompile() {
-      switchToLoading();
-      const latexContent = monaco.editor.getModels()[0].getValue();
-      fetch('/save_and_compile', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ content: latexContent })
-      })
-      .then(response => { return response.json(); })
-      .then(data => {
-        // Reload iframe
-        if (data.status === 200) {
-          document.getElementById('pdf-iframe').contentWindow.location.reload();
-          switchBackFromLoading();
-        } else {
-          alert(`Compile Failed: ${data.content}`);
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
+    switchToLoading();
+    const latexContent = monaco.editor.getModels()[0].getValue();
+    fetch('/save_and_compile', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ content: latexContent })
+    })
+    .then(response => { return response.json(); })
+    .then(data => {
+      // Reload iframe
+      if (data.status === 200) {
+        document.getElementById('pdf-iframe').contentWindow.location.reload();
+        switchBackFromLoading();
+      } else {
+        alert(`Compile Failed: ${data.content}`);
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
   }
 
   // Ctrl + S to save and compile data
@@ -87,6 +87,6 @@
   
   // save-and-compile-btn onclick
   saveAndCompileBtn.addEventListener('click', () => {
-      saveAndCompile();
+    saveAndCompile();
   });
 })();
