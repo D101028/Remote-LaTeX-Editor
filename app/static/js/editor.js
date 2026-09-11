@@ -29,8 +29,103 @@
       value: texContents,
       language: 'latex',
       theme: 'vs-dark',
-      fontSize: 16,
-      automaticLayout: true
+      fontSize: 24,
+      automaticLayout: true, 
+      wordWrap: 'on', // 強制開啟自動換行
+      // Tab Settings
+      tabSize: 2,         // 1. 將一個 Tab 的寬度設定為 2 個空格
+      insertSpaces: true, // 2. 按下 Tab 鍵時，自動插入空格（而不是真正的 \t 字元）
+      detectIndentation: false // 3. 停用自動偵測（強迫編輯器嚴格執行上面的 2 空格設定）
+    });
+
+    // 註冊摺疊規則
+    monaco.languages.registerFoldingRangeProvider('latex', {
+      provideFoldingRanges: function (model, context, token) {
+        var foldingRanges = [];
+        var lines = model.getLineCount();
+        
+        // 用來追蹤 \begin 的堆疊 (Stack)
+        var beginStack = [];
+        var preambleStart = -1;
+
+        for (var i = 1; i <= lines; i++) {
+          var content = model.getLineContent(i).trim();
+
+          // 跳過空行
+          if (content === '') continue;
+
+          // 1. 記錄 \documentclass 的行號作為導言區起點
+          if (content.indexOf('\\documentclass') === 0) {
+            preambleStart = i;
+          }
+
+          // 2. 匹配 \begin{...} 和 \end{...}
+          var beginMatch = content.match(/\\begin\{([^}]+)\}/);
+          var endMatch = content.match(/\\end\{([^}]+)\}/);
+
+          if (beginMatch) {
+            var envName = beginMatch[1]; // 取得括號內的大環境名稱（例如 document, equation）
+
+            // 如果碰到了 \begin{document}，且前面有 \documentclass，就建立導言區摺疊
+            if (envName === 'document' && preambleStart !== -1 && i > preambleStart) {
+              foldingRanges.push({
+                start: preambleStart,
+                end: i - 1,
+                kind: monaco.languages.FoldingRangeKind.Region
+              });
+            }
+
+            // 將當前環境名稱與行號壓入堆疊
+            beginStack.push({ name: envName, line: i });
+          } 
+          else if (endMatch) {
+            var endEnvName = endMatch[1];
+
+            // 尋找堆疊中最近一個名稱相符的 \begin
+            for (var j = beginStack.length - 1; j >= 0; j--) {
+              if (beginStack[j].name === endEnvName) {
+                var lastBegin = beginStack.splice(j, 1)[0]; // 移除並取出該元素
+                
+                // 摺疊範圍：從 \begin 到 \end 這一行
+                if (i > lastBegin.line) {
+                  foldingRanges.push({
+                    start: lastBegin.line,
+                    end: i,
+                    kind: monaco.languages.FoldingRangeKind.Region
+                  });
+                }
+                break;
+              }
+            }
+          }
+        }
+
+        return foldingRanges;
+      }
+  
+    });
+
+    // 註冊 LaTeX 的自動縮排與換行規則
+    monaco.languages.setLanguageConfiguration('latex', {
+      onEnterRules: [
+        {
+          // 當前一行是以 \begin{...} 結尾，且下一行是以 \end{...} 開頭時
+          // 按下 Enter 會把 \end 推到下一行，並在中間插入一個帶縮排的空行
+          beforeText: /\\begin\{[^}]+\}\s*$/,
+          afterText: /\\end\{[^}]+\}/,
+          action: {
+              indentAction: monaco.languages.IndentAction.IndentOutdent
+          }
+        },
+        {
+          // 當前一行僅以 \begin{...} 結尾（下方還沒有 \end）
+          // 按下 Enter 後，下一行會自動縮排
+          beforeText: /\\begin\{[^}]+\}\s*$/,
+          action: {
+              indentAction: monaco.languages.IndentAction.Indent
+          }
+        }
+      ]
     });
 
     // Mobile Device

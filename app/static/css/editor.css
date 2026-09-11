@@ -27,6 +27,23 @@ body {
     /* justify-content: center; */
 }
 
+#burger-menu {
+    width: 30px;
+    height: 30px;
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    user-select: none;
+    margin-left: 10px;
+}
+#burger-menu:hover {
+    background-color: rgb(85, 85, 85);
+}
+#burger-menu:active {
+    background-color: rgb(100, 100, 100);
+}
+
 #loading-svg {
     width: 30px;
     height: 30px;
