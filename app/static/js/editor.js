@@ -52,6 +52,43 @@
     saveAndCompileBtn.style.display = 'flex';
   }
 
+  function reloadPDFIframe() {
+    const iframe = document.getElementById('pdf-iframe');
+    const pdfApp = iframe.contentWindow.PDFViewerApplication;
+
+    // 1. 備份當前的「頁碼」與「滾動容器的 scrollTop 百分比（防止縮放誤差）」
+    const savedPage = pdfApp.page; 
+    const container = pdfApp.pdfViewer.container; // 這是實際在滾動的 HTML Div
+    const savedScrollTop = container.scrollTop;
+    const currentPdfUrl = pdfApp.baseUrl;
+
+    // 2. 註冊一次性監聽器：等到新 PDF「所有頁面都載入並計算好尺寸」時
+    const onPagesLoaded = () => {
+      // 核心捷徑：利用內建屬性直接指派頁碼，PDF.js 會自動滾動到該頁
+      pdfApp.page = savedPage;
+      
+      // 如果需要像素級的精準度，再用 setTimeout 微調回當初的精準滾動點
+      setTimeout(() => {
+        container.scrollTop = savedScrollTop;
+      }, 50);
+      
+      // 自動收起側欄
+      if (pdfApp.pdfSidebar) {
+        pdfApp.pdfSidebar.close();
+      }
+
+      pdfApp.eventBus.off("pagesloaded", onPagesLoaded);
+    };
+
+    // 3. 綁定新版事件巴士
+    pdfApp.eventBus.on("pagesloaded", onPagesLoaded);
+
+    // 4. 重新載入（加入時間戳記強迫刷新快取）
+    pdfApp.open({
+      url: currentPdfUrl.split('?')[0] + '?t=' + Date.now()
+    });
+  }
+
   function saveAndCompile() {
     switchToLoading();
     const latexContent = monaco.editor.getModels()[0].getValue();
@@ -66,7 +103,7 @@
     .then(data => {
       // Reload iframe
       if (data.status === 200) {
-        document.getElementById('pdf-iframe').contentWindow.location.reload();
+        reloadPDFIframe();
         switchBackFromLoading();
       } else {
         alert(`Compile Failed: ${data.content}`);
