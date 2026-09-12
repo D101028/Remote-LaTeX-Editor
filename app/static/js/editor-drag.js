@@ -12,6 +12,14 @@
     document.body.style.cursor = 'col-resize';
   });
 
+  function setPreviewWidth(percent) {
+    if (percent < 0 || percent > 100) {
+      throw Error(`Unsupported ratio: ${ratio}`);
+    }
+    editor.style.width = `${100-percent}%`;
+    preview.style.width = `${percent}%`;
+  }
+
   function mouseMove(doc = document) {
     const inner = (e) => {
       if (!isDragging) return;
@@ -30,8 +38,7 @@
         iframePercent = 80;
       }
 
-      editor.style.width = `${100 - iframePercent}%`;
-      preview.style.width = `${iframePercent}%`;
+      setPreviewWidth(iframePercent);
     }
     return inner;
   }
@@ -57,29 +64,35 @@
   const rightArrowRect = document.getElementById("class-bg-rect-right");
 
   leftArrowRect.addEventListener('click', () => {
-    const previewWidth = preview.offsetWidth;
-    const previewHeight = preview.offsetHeight;
     const docWidth = document.documentElement.offsetWidth;
-    const percent = previewWidth / docWidth * 100;
-    const ratio = docWidth * (1 - percent / 100) / editor.offsetHeight;
-    if (ratio <= 30 && previewWidth / previewHeight >= 0.9 ) {
-      editor.style.width = `50%`;
-      preview.style.width = `50%`;
+    const previewWidth = preview.offsetWidth;
+
+    if (docWidth <= 600) {
+      // 手機寬度
+      setPreviewWidth(100);
     } else {
-      editor.style.width = `0%`;
-      preview.style.width = `100%`;
+      // 寬頻顯示器
+      if (previewWidth <= docWidth / 3) {
+        setPreviewWidth(50);
+      } else {
+        setPreviewWidth(100);
+      }
     }
   });
   rightArrowRect.addEventListener('click', () => {
-    const previewWidth = preview.offsetWidth;
     const docWidth = document.documentElement.offsetWidth;
-    const percent = previewWidth / docWidth * 100;
-    if (percent >= 70 && percent >= 0.9) {
-      editor.style.width = `50%`;
-      preview.style.width = `50%`;
+    const editorWidth = editor.offsetWidth;
+
+    if (docWidth <= 600) {
+      // 手機寬度
+      setPreviewWidth(0);
     } else {
-      editor.style.width = `100%`;
-      preview.style.width = `0%`;
+      // 寬頻顯示器
+      if (editorWidth <= docWidth / 3) {
+        setPreviewWidth(50);
+      } else {
+        setPreviewWidth(0);
+      }
     }
   });
 })();
