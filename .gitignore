@@ -1,8 +1,8 @@
 test*.py
 test.conf
 .venv-*
-./workspaces.json
-./workspace-default/
+workspaces.json
+workspace-default/
 !app/static/pdfjs/build/
 
 # Byte-compiled / optimized / DLL files
