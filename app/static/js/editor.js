@@ -155,16 +155,22 @@
     const savedPage = pdfApp.page; 
     const container = pdfApp.pdfViewer.container; // 這是實際在滾動的 HTML Div
     const savedScrollTop = container.scrollTop;
+    const savedScrollLeft = container.scrollLeft;
     const currentPdfUrl = pdfApp.baseUrl;
+    const savedScale = pdfApp.pdfViewer.currentScale; // 當前縮放比例
 
     // 2. 註冊一次性監聽器：等到新 PDF「所有頁面都載入並計算好尺寸」時
     const onPagesLoaded = () => {
       // 核心捷徑：利用內建屬性直接指派頁碼，PDF.js 會自動滾動到該頁
       pdfApp.page = savedPage;
+
+      // 還原縮放比例
+      pdfApp.pdfViewer.currentScale = savedScale;
       
-      // 如果需要像素級的精準度，再用 setTimeout 微調回當初的精準滾動點
+      // 微調回當初的精準滾動點
       setTimeout(() => {
         container.scrollTop = savedScrollTop;
+        container.scrollLeft = savedScrollLeft;
       }, 50);
       
       // 自動收起側欄
