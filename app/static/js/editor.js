@@ -29,7 +29,7 @@
       value: texContents,
       language: 'latex',
       theme: 'vs-dark',
-      fontSize: 24,
+      fontSize: 20,
       automaticLayout: true, 
       wordWrap: 'on', // 強制開啟自動換行
       // Tab Settings
