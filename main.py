@@ -1,3 +1,5 @@
+from waitress import serve
+
 from app import create_app
 from app.config import Config, initialize_data
 
@@ -12,4 +14,5 @@ def init_data():
 
 if __name__ == '__main__':
     init_data()
-    app.run(host=Config.HOST, port=Config.PORT, debug=True)
+    print(f">> Starting Server on {Config.HOST}:{Config.PORT} <<")
+    serve(app, host=Config.HOST, port=Config.PORT)
