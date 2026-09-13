@@ -138,6 +138,7 @@ def create_workspace():
         return jsonify(error=f"Workspace already exists: {workspace_id}"), 409
 
     workspace = _workspace_from_payload(workspace_id, data) # type: ignore
+    workspace.initialize()
     workspaces[workspace_id] = workspace
     Workspace.save_all(workspaces)
     return jsonify(workspace=_workspace_data(workspace)), 201
@@ -206,4 +207,3 @@ def delete_workspace(workspace_id: str):
     if _current_workspace().workspace_id == workspace_id:
         _store_workspace(workspaces[DEFAULT_WORKSPACE_ID])
     return "", 204
-

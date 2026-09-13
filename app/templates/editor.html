@@ -107,11 +107,90 @@
   <div id="setting-panel-container">
     <div id="setting-panel">
       <div class="panel-content">
-        <p>This is the setting panel.</p>
+        <section class="workspace-settings" aria-labelledby="workspace-settings-title">
+          <h2 id="workspace-settings-title">Workspace</h2>
+
+          <section class="workspace-section" aria-labelledby="current-workspace-title">
+            <button
+              id="current-workspace-title"
+              class="workspace-section-title workspace-section-toggle"
+              type="button"
+              aria-expanded="true"
+              aria-controls="current-workspace-content"
+            >
+              <span>Current workspace</span>
+              <span class="workspace-section-chevron" aria-hidden="true">⌄</span>
+            </button>
+            <div id="current-workspace-content" class="workspace-section-content">
+              <label for="workspace-select">Workspace</label>
+              <select id="workspace-select" name="workspace" disabled>
+                <option>Loading workspaces…</option>
+              </select>
+
+              <form id="current-workspace-form">
+                <label for="current-workspace-working-dir">Working directory</label>
+                <input id="current-workspace-working-dir" name="working_dir" type="text" required>
+
+                <label for="current-workspace-tex-filename">TeX filename</label>
+                <input id="current-workspace-tex-filename" name="tex_filename" type="text" required>
+
+                <label for="current-workspace-compile-cmd">Compile command</label>
+                <input id="current-workspace-compile-cmd" name="compile_cmd" type="text" required>
+              </form>
+            </div>
+          </section>
+
+          <section class="workspace-section" aria-labelledby="new-workspace-title">
+            <h3 id="new-workspace-title" class="workspace-section-title">Create workspace</h3>
+            <form id="new-workspace-form">
+              <label for="new-workspace-id">Workspace name</label>
+              <input
+                id="new-workspace-id"
+                name="workspace_id"
+                type="text"
+                placeholder="Workspace name"
+                autocomplete="off"
+                required
+              >
+
+              <label for="new-workspace-working-dir">Working directory</label>
+              <input
+                id="new-workspace-working-dir"
+                name="working_dir"
+                type="text"
+                placeholder="./workspace-my-project"
+                autocomplete="off"
+              >
+
+              <label for="new-workspace-tex-filename">TeX filename</label>
+              <input
+                id="new-workspace-tex-filename"
+                name="tex_filename"
+                type="text"
+                placeholder="main.tex"
+                autocomplete="off"
+              >
+
+              <label for="new-workspace-compile-cmd">Compile command</label>
+              <input
+                id="new-workspace-compile-cmd"
+                name="compile_cmd"
+                type="text"
+                placeholder="xelatex -interaction=nonstopmode -halt-on-error main.tex"
+                autocomplete="off"
+              >
+
+              <div class="new-workspace-controls">
+                <button id="create-workspace-btn" type="submit">Create</button>
+              </div>
+            </form>
+          </section>
+          <p id="workspace-status" class="workspace-status" role="status" aria-live="polite"></p>
+        </section>
       </div>
       <div class="panel-bottom">
-        <div id="panel-close-btn">Close</div>
-        <div id="panel-apply-btn">Apply</div>
+        <button id="panel-close-btn" type="button">Close</button>
+        <button id="panel-apply-btn" type="button" disabled>Apply</button>
       </div>
     </div>
   </div>

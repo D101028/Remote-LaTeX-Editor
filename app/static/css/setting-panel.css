@@ -19,10 +19,11 @@
 }
 
 #setting-panel { 
-  display: block; 
+  display: block;
   position: relative; /* 確保子元素絕對定位時相對於此面板 */
-  width: 800px; 
-  height: 600px; 
+  width: min(800px, calc(100vw - 32px));
+  min-height: 360px;
+  height: min(600px, calc(100vh - 32px));
   background-color: rgb(31, 30, 31); 
   border-radius: 20px; 
   transform: translateY(100%); /* 往下推 100% 隱藏 */
@@ -31,13 +32,170 @@
 
 .panel-content { 
   display: flex; 
-  align-items: center; 
+  align-items: flex-start;
   justify-content: center;
-  padding: 10px; 
+  padding: 48px 64px 100px;
   width: 100%; 
-  height: 50%; 
+  height: 100%;
   box-sizing: border-box; /* 防止 padding 撐開寬高 */
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #a855f7 #252525;
 } 
+
+.panel-content::-webkit-scrollbar {
+  width: 10px;
+}
+
+.panel-content::-webkit-scrollbar-track {
+  margin: 16px 0;
+  border-radius: 999px;
+  background: #252525;
+}
+
+.panel-content::-webkit-scrollbar-thumb {
+  border: 2px solid #252525;
+  border-radius: 999px;
+  background: #8b3ddb;
+}
+
+.panel-content::-webkit-scrollbar-thumb:hover {
+  background: #a855f7;
+}
+
+.workspace-settings {
+  width: min(100%, 520px);
+}
+
+.workspace-settings h2 {
+  margin: 0 0 32px;
+  color: #eee;
+  font-size: 28px;
+}
+
+.workspace-section {
+  border: 1px solid #464646;
+  border-radius: 12px;
+  background: #272727;
+  overflow: hidden;
+}
+
+.workspace-section + .workspace-section {
+  margin-top: 20px;
+}
+
+.workspace-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 52px;
+  margin: 0;
+  padding: 0 18px;
+  box-sizing: border-box;
+  border: 0;
+  color: #eee;
+  background: #333;
+  font: 600 16px/1 sans-serif;
+  text-align: left;
+}
+
+.workspace-section-toggle {
+  cursor: pointer;
+}
+
+.workspace-section-toggle:hover {
+  background: #3d3d3d;
+}
+
+.workspace-section-chevron {
+  font-size: 24px;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.workspace-section-toggle[aria-expanded="false"] .workspace-section-chevron {
+  transform: rotate(-90deg);
+}
+
+.workspace-section-content,
+#new-workspace-form {
+  padding: 20px 18px;
+}
+
+.workspace-settings label {
+  display: block;
+  margin-bottom: 8px;
+  color: #ddd;
+  font-size: 15px;
+}
+
+#workspace-select,
+#current-workspace-form input,
+#new-workspace-form input {
+  width: 100%;
+  min-height: 42px;
+  padding: 8px 12px;
+  border: 1px solid #5d5d5d;
+  border-radius: 8px;
+  box-sizing: border-box;
+  color: #eee;
+  background: #292929;
+  font: inherit;
+}
+
+#workspace-select:focus,
+#current-workspace-form input:focus,
+#new-workspace-form input:focus {
+  outline: 2px solid #a855f7;
+  outline-offset: 2px;
+}
+
+#new-workspace-form {
+  margin: 0;
+}
+
+#current-workspace-form label:first-child,
+#new-workspace-form label:first-child {
+  margin-top: 18px;
+}
+
+#current-workspace-form label:not(:first-child),
+#new-workspace-form label:not(:first-child) {
+  margin-top: 18px;
+}
+
+.new-workspace-controls {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+#create-workspace-btn {
+  flex: 0 0 auto;
+  border: 0;
+  border-radius: 8px;
+  padding: 0 18px;
+  color: #eee;
+  background: #505050;
+  cursor: pointer;
+  font: inherit;
+  min-height: 42px;
+}
+
+#create-workspace-btn:hover:not(:disabled) {
+  background: #666;
+}
+
+.workspace-status {
+  min-height: 1.25em;
+  margin: 14px 0 0;
+  color: #b8e7bb;
+}
+
+.workspace-status.is-error {
+  color: #ff9b9b;
+}
 
 .panel-bottom { 
   display: flex; 
@@ -55,13 +213,15 @@
     align-items: center;
     justify-items: center;
     margin: 5px;
-    height: 20px;
+    height: 30px;
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 5px;
     color: #EEEEEE;
     background-color: rgb(62, 62, 62);
     user-select: none;
     cursor: pointer;
+    border: 0;
+    font: inherit;
 }
 #panel-close-btn:hover {
     background-color: rgb(95, 94, 94);
@@ -76,13 +236,15 @@
     justify-items: center;
     margin: 5px;
     margin-right: 50px;
-    height: 20px;
+    height: 30px;
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 5px;
     color: #EEEEEE;
     background-color: blueviolet;
     user-select: none;
     cursor: pointer;
+    border: 0;
+    font: inherit;
 }
 #panel-apply-btn:hover {
     background-color: rgb(111, 25, 192);
@@ -91,10 +253,28 @@
     background-color: rgb(87, 10, 159);
 }
 
+#panel-apply-btn:disabled,
+#create-workspace-btn:disabled {
+    cursor: wait;
+    opacity: 0.6;
+}
+
 
 @media screen and (max-width: 600px) {
     #setting-panel {
-        width: 300px;
-        height: 600px;
+        min-height: 340px;
+        height: min(600px, calc(100vh - 32px));
+    }
+
+    .panel-content {
+        padding: 36px 24px 100px;
+    }
+
+    .new-workspace-controls {
+        flex-direction: column;
+    }
+
+    #create-workspace-btn {
+        min-height: 42px;
     }
 }

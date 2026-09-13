@@ -267,6 +267,22 @@ class Workspace:
             "compile_cmd": self.compile_cmd,
         }
 
+    def initialize(self) -> None:
+        """Create this workspace's directory and its initial TeX source file.
+
+        The method is deliberately idempotent: it creates missing paths and
+        writes :data:`DEFAULT_TEX_CONTENT` only when the configured TeX file
+        does not yet exist, so recreating application data never overwrites a
+        user's document.
+        """
+        working_dir = Path(self.working_dir)
+        working_dir.mkdir(parents=True, exist_ok=True)
+
+        tex_path = working_dir / self.tex_filename
+        tex_path.parent.mkdir(parents=True, exist_ok=True)
+        if not tex_path.exists():
+            tex_path.write_text(DEFAULT_TEX_CONTENT, encoding="utf-8")
+
     @classmethod
     def load(
         cls,
@@ -393,12 +409,7 @@ def initialize_data() -> None:
         Workspace.save_all(workspaces, workspaces_path)
 
     for workspace in workspaces.values():
-        working_dir = Path(workspace.working_dir)
-        working_dir.mkdir(parents=True, exist_ok=True)
-        tex_path = working_dir / workspace.tex_filename
-        tex_path.parent.mkdir(parents=True, exist_ok=True)
-        if not tex_path.exists():
-            tex_path.write_text(DEFAULT_TEX_CONTENT, encoding="utf-8")
+        workspace.initialize()
 
 
 class Config:
