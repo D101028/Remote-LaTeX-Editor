@@ -15,6 +15,7 @@
   const workspaceStatus = document.getElementById('workspace-status');
   const currentWorkspaceToggle = document.getElementById('current-workspace-title');
   const currentWorkspaceContent = document.getElementById('current-workspace-content');
+  const newWorkspaceToggle = document.getElementById('new-workspace-title');
   const workspacesById = new Map();
 
   function setStatus(message, isError = false) {
@@ -112,6 +113,11 @@
     const isExpanded = currentWorkspaceToggle.getAttribute('aria-expanded') === 'true';
     currentWorkspaceToggle.setAttribute('aria-expanded', String(!isExpanded));
     currentWorkspaceContent.hidden = isExpanded;
+  });
+  newWorkspaceToggle.addEventListener('click', () => {
+    const isExpanded = newWorkspaceToggle.getAttribute('aria-expanded') === 'true';
+    newWorkspaceToggle.setAttribute('aria-expanded', String(!isExpanded));
+    newWorkspaceForm.hidden = isExpanded;
   });
   currentWorkspaceForm.addEventListener('submit', (event) => event.preventDefault());
 

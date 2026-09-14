@@ -141,8 +141,18 @@
           </section>
 
           <section class="workspace-section" aria-labelledby="new-workspace-title">
-            <h3 id="new-workspace-title" class="workspace-section-title">Create workspace</h3>
-            <form id="new-workspace-form">
+            <!-- <h3 id="new-workspace-title" class="workspace-section-title">Create workspace</h3> -->
+            <button
+              id="new-workspace-title"
+              class="workspace-section-title workspace-section-toggle"
+              type="button"
+              aria-expanded="false"
+              aria-controls="new-workspace-content"
+            >
+              <span>Create workspace</span>
+              <span class="workspace-section-chevron" aria-hidden="false">⌄</span>
+            </button>
+            <form id="new-workspace-form" hidden="true">
               <label for="new-workspace-id">Workspace name</label>
               <input
                 id="new-workspace-id"
