@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import configparser
 import json
+import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, ClassVar, Final, Mapping, Sequence
@@ -156,6 +157,8 @@ class _Settings:
     default_working_dir: str
     default_tex_filename: str
     default_compile_cmd: str
+    ocr_enabled: bool
+    ocr_model: str
 
 
 def _parse_config_path(argv: Sequence[str] | None = None) -> Path:
@@ -207,6 +210,8 @@ def _load_settings(config_path: Path) -> _Settings:
         default_working_dir=default_working_dir,
         default_tex_filename=default_tex_filename,
         default_compile_cmd=default_compile_cmd,
+        ocr_enabled=defaults.getboolean("OCR_ENABLED", fallback=False),
+        ocr_model=defaults.get("OCR_MODEL", "").strip(),
     )
 
 
@@ -360,6 +365,12 @@ def initialize_data() -> None:
     each workspace receives its working directory and main TeX file if absent.
     Existing configuration values and TeX file contents are never overwritten.
     """
+    if _settings.ocr_enabled:
+        if not _settings.ocr_model:
+            raise ValueError("OCR_MODEL must be set when OCR_ENABLED is true.")
+        if not os.environ.get("GEMINI_API_KEY", "").strip():
+            raise ValueError("GEMINI_API_KEY must be set when OCR_ENABLED is true.")
+
     parser = configparser.ConfigParser()
     parser.read(_config_path, encoding="utf-8")
     defaults = parser[configparser.DEFAULTSECT]
@@ -372,6 +383,8 @@ def initialize_data() -> None:
         "WORKING_DIR": _settings.default_working_dir,
         "TEX_FILENAME": _settings.default_tex_filename,
         "COMPILE_CMD": _settings.default_compile_cmd,
+        "OCR_ENABLED": str(_settings.ocr_enabled).lower(),
+        "OCR_MODEL": _settings.ocr_model,
     }
     required_values = {
         "HOST",
@@ -422,6 +435,9 @@ class Config:
     # Authentication
     USERNAME: ClassVar[str] = _settings.username
     PASSWORD: ClassVar[str] = _settings.password
+
+    OCR_ENABLED: ClassVar[bool] = _settings.ocr_enabled
+    OCR_MODEL: ClassVar[str] = _settings.ocr_model
 
     # Workspace settings
     WORKSPACES_CONFIG_PATH: ClassVar[str] = _settings.workspaces_config_path

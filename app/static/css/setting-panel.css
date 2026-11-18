@@ -15,7 +15,7 @@
   background-color: rgba(128, 128, 128, 0.5);
 
   /* 確保在最上層 */
-  z-index: 100;
+  z-index: 101;
 }
 
 #setting-panel {

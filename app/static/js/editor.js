@@ -38,6 +38,22 @@
       detectIndentation: false // 3. 停用自動偵測（強迫編輯器嚴格執行上面的 2 空格設定）
     });
 
+    document.getElementById('editor').addEventListener('sketch:insert-latex', (event) => {
+      const position = monacoEditor.getPosition();
+      if (!position) return;
+      const range = monaco.Range.fromPositions(position);
+      monacoEditor.pushUndoStop();
+      const inserted = monacoEditor.executeEdits('sketch-ocr', [{ range, text: event.detail }], ([edit]) => {
+        const end = edit.range.getEndPosition();
+        return [monaco.Selection.fromPositions(end)];
+      });
+      if (inserted) {
+        monacoEditor.pushUndoStop();
+        monacoEditor.focus();
+        event.preventDefault();
+      }
+    });
+
     // 註冊摺疊規則
     monaco.languages.registerFoldingRangeProvider('latex', {
       provideFoldingRanges: function (model, context, token) {

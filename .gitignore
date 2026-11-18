@@ -4,6 +4,7 @@ test.conf
 workspaces.json
 workspace-default/
 !app/static/pdfjs/build/
+templates-test/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

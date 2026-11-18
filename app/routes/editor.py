@@ -3,11 +3,15 @@ import shlex
 import subprocess
 from pathlib import Path
 from typing import Any, Mapping
+import base64
+from io import BytesIO
 
-from flask import Blueprint, render_template, send_from_directory, jsonify, request, session
+from PIL import Image
+from flask import Blueprint, current_app, render_template, send_from_directory, jsonify, request, session
 
-from app.config import DEFAULT_WORKSPACE_ID, Workspace
+from app.config import Config, DEFAULT_WORKSPACE_ID, Workspace
 from app.support.filter import logged_in_only
+from app.support.ocr import ocr
 
 editor_bp = Blueprint('editor', __name__)
 WORKSPACE_SESSION_KEY = "workspace"
@@ -64,7 +68,7 @@ def editor():
             tex_contents = file.read()
     else:
         tex_contents = ""
-    return render_template("editor.html", tex_contents = tex_contents)
+    return render_template("editor.html", tex_contents=tex_contents, ocr_enabled=Config.OCR_ENABLED)
 
 @editor_bp.route("/fetch_pdf")
 @logged_in_only
@@ -207,3 +211,53 @@ def delete_workspace(workspace_id: str):
     if _current_workspace().workspace_id == workspace_id:
         _store_workspace(workspaces[DEFAULT_WORKSPACE_ID])
     return "", 204
+
+def _base64_to_pil(base64_str: str, output_path: str = None) -> Image.Image:
+    # 1. Remove the data URI header if present (e.g., "data:image/png;base64,")
+    if "," in base64_str:
+        base64_str = base64_str.split(",", 1)[1]
+
+    # 2. Decode the Base64 string into raw binary bytes
+    image_bytes = base64.b64decode(base64_str)
+
+    # 3. Wrap bytes in a BytesIO stream and open with PIL
+    image = Image.open(BytesIO(image_bytes))
+
+    # 4. Save to disk if an output path is provided
+    if output_path:
+        image.save(output_path)
+
+    return image
+
+@editor_bp.route("/api/sketch/ocr", methods=["POST"])
+@logged_in_only
+def ocr_sketch():
+    """OCR the sketch. Return the recognized LaTeX code."""
+    if not Config.OCR_ENABLED:
+        return jsonify(error="OCR is disabled."), 403
+
+    data, error = _json_body()
+    if error:
+        return error
+
+    base64_data = data.get('image')
+    if not isinstance(base64_data, str) or not base64_data:
+        return jsonify(error="An image is required."), 400
+
+    try:
+        img = _base64_to_pil(base64_data)
+        img.load()
+    except (ValueError, OSError):
+        return jsonify(error="Invalid image data."), 400
+
+    try:
+        with img:
+            result = ocr(img)
+    except Exception:
+        current_app.logger.exception("Sketch OCR failed")
+        return jsonify(error="OCR failed. Please try again."), 502
+
+    if not result:
+        return jsonify(error="No LaTeX was recognized."), 422
+
+    return jsonify({"result": result})

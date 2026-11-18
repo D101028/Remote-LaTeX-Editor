@@ -14,6 +14,17 @@ body {
   flex-direction: column;
 }
 
+/* Ref: https://stackoverflow.com/questions/826782/how-to-disable-text-selection-highlighting */
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
 .nav-container {
   width: 100vw;
   height: 40px;
@@ -36,7 +47,6 @@ body {
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  user-select: none;
   padding: 2px;
   margin-left: 10px;
 }
@@ -46,6 +56,23 @@ body {
 }
 
 #burger-menu:active {
+  background-color: rgb(100, 100, 100);
+}
+
+.std-svg-container {
+  width: 30px;
+  height: 30px;
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 2px;
+  margin-right: 10px;
+}
+.std-svg-container:hover {
+  background-color: rgb(85, 85, 85);
+}
+.std-svg-container:active {
   background-color: rgb(100, 100, 100);
 }
 
@@ -59,25 +86,9 @@ body {
   animation: spin 1s linear infinite;
 }
 
-#settings-svg {
-  width: 30px;
-  height: 30px;
-  background-color: rgba(255, 255, 255, 0);
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  user-select: none;
-  padding: 2px;
-  margin-right: 10px;
+/* 靠右元件中最左側的 */
+#toggle-sketch {
   margin-left: auto;
-}
-
-#settings-svg:hover {
-  background-color: rgb(85, 85, 85);
-}
-
-#settings-svg:active {
-  background-color: rgb(100, 100, 100);
 }
 
 @keyframes spin {
@@ -101,7 +112,6 @@ body {
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  user-select: none;
 }
 
 #save-and-compile-btn:hover {
@@ -124,7 +134,6 @@ body {
 #preview {
   height: 100%;
   overflow: auto;
-  user-select: none;
 }
 
 #editor {
@@ -148,7 +157,6 @@ body {
 #divider {
   background-color: #666;
   cursor: col-resize;
-  user-select: none;
   height: 100%;
   width: 100%;
   flex-shrink: 0;

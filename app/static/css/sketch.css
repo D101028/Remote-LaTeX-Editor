@@ -1,0 +1,98 @@
+/* =======================================
+    懸浮畫板外掛 CSS (有加上專屬 ID 避免污染全域)
+    ======================================= */
+#sketch-plugin {
+  position: fixed;
+  top: 50px;
+  right: 100px;
+  width: 400px;
+  height: 300px;
+  background: #ffffff;
+  color: #222;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  border: 1px solid #d1d1d6;
+  /* display: flex; */
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 100;
+  /* 允許右下角原生縮放 */
+  resize: both; 
+}
+
+/* 頂部拖曳列 */
+#sketch-header {
+  background: #f4f4f6;
+  padding: 8px 12px;
+  cursor: grab;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e5e5ea;
+  user-select: none;
+  touch-action: none; /* 防止拖曳時觸發頁面捲動 */
+}
+#sketch-header:active {
+  cursor: grabbing;
+}
+.sketch-title { font-size: 14px; font-weight: bold; color: #1c1c1e; }
+.sketch-mode-badge { 
+  font-size: 12px; 
+  background: #e0e0e0; 
+  padding: 2px 8px; 
+  border-radius: 10px; 
+  margin-left: auto;
+  margin-right: 5px;
+}
+
+/* 畫布區塊 */
+#sketch-canvas-container {
+  flex: 1;
+  position: relative;
+  background: #fff;
+  overflow: hidden;
+  touch-action: none; /* 讓畫布接管所有觸控，防止捲動 */
+}
+#sketch-canvas {
+  display: block;
+  cursor: crosshair;
+}
+
+/* 底部工具列 */
+#sketch-toolbar {
+  background: #fafafa;
+  padding: 8px;
+  border-top: 1px solid #e5e5ea;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  font-size: 13px;
+}
+.sketch-btn {
+  padding: 4px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+}
+.sketch-btn.active { background: #007aff; color: #fff; border-color: #007aff; }
+.sketch-color {
+  width: 20px; height: 20px; border-radius: 50%; border: 2px solid transparent; cursor: pointer;
+}
+.sketch-color.active { border-color: #333; transform: scale(1.1); }
+
+.sketch-header-btn {
+  align-items: center;
+  justify-content: center;
+  padding: 4px 6px;
+  border-radius: 6px;
+  background-color: rgba(0,0,0,0);
+}
+.sketch-header-btn:hover {
+  background-color: #CCC;
+}
+.sketch-header-btn:active {
+  background-color: #BBB;
+}
