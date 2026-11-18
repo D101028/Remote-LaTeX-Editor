@@ -67,11 +67,11 @@
   background: #a855f7;
 }
 
-.workspace-settings {
+.settings-container {
   width: min(100%, 520px);
 }
 
-.workspace-settings h2 {
+.settings-container h2 {
   margin: 0 0 32px;
   color: #eee;
   font-size: 28px;
@@ -127,7 +127,7 @@
   padding: 20px 18px;
 }
 
-.workspace-settings label {
+.settings-container label {
   display: block;
   margin-bottom: 8px;
   color: #ddd;
