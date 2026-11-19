@@ -7,7 +7,7 @@ A simple remote latex online editor.
 
 ## New Features
 
-- **OCR painting pad embed**: enable to use pencil or fingers to write formula and apply OCR with backend selected model (Gemini API supported).
+- **OCR painting pad embeded**: enable to use pencil or fingers to write formula and apply OCR with backend selected model (Gemini API supported).
 
 ## Getting Started
 
