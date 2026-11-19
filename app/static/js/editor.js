@@ -209,7 +209,8 @@
   function saveAndCompile() {
     switchToLoading();
     const latexContent = monaco.editor.getModels()[0].getValue();
-    fetch('/save_and_compile', {
+    const url = saveAndCompileBtn.dataset.saveAndCompileUrl;
+    fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
